@@ -1,11 +1,4 @@
 <!-- ===================== index.html ===================== -->
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EnergiScan</title>
-  <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -26,12 +19,12 @@
 
     <label>Golongan Listrik</label>
     <select id="vaSelect">
-      <option value="415">450 VA Subsidi — 415/kWh</option>
-      <option value="605">900 VA Subsidi — 605/kWh</option>
-      <option value="1352">900 VA Non Subsidi — 1352/kWh</option>
-      <option value="1444.7">1300 VA — 1444.7/kWh</option>
-      <option value="1444.7">2200 VA — 1444.7/kWh</option>
-      <option value="1699.53">3500 VA — 1699.53/kWh</option>
+      <option value="415" data-va="450">450 VA Subsidi — 415/kWh</option>
+      <option value="605" data-va="900">900 VA Subsidi — 605/kWh</option>
+      <option value="1352" data-va="900">900 VA Non-Subsidi — 1352/kWh</option>
+      <option value="1444.7" data-va="1300">1300 VA — 1444.7/kWh</option>
+      <option value="1444.7" data-va="2200">2200 VA — 1444.7/kWh</option>
+      <option value="1699.53" data-va="3500">3500 VA — 1699.53/kWh</option>
     </select>
 
     <h3>Tambah Perangkat</h3>
@@ -70,5 +63,3 @@
 <script src="script.js"></script>
 </body>
 </html>
-
-
