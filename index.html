@@ -17,14 +17,15 @@
 <section id="landing" class="page active">
   <div class="card center">
     <h1>⚡ EnergiScan</h1>
-    <p id="mascot">Halo! Saya Vecto 🤖 — siap bantu analisis energi kamu!</p>
-    <button id="startBtn">Mulai Analisis</button>
+    <p>Analisis konsumsi listrik dan simulasi tagihan secara cerdas</p>
+    <button id="startBtn">Mulai</button>
   </div>
 </section>
 
 <!-- ================= INPUT ================= -->
 <section id="inputPage" class="page">
   <div class="card">
+
     <h2>Input Data Energi</h2>
 
     <!-- VA -->
@@ -39,28 +40,29 @@
       <option value="1699.53" data-va="3500">3500 VA — 1699.53/kWh</option>
     </select>
 
+    <!-- PRESET -->
+    <h3>Pilih Perangkat Umum</h3>
+    <select id="presetSelect">
+      <option value="">-- Pilih Perangkat --</option>
+      <option value="Lampu LED|10">Lampu LED (10W)</option>
+      <option value="TV LED|60">TV LED (60W)</option>
+      <option value="Kulkas|100">Kulkas (100W)</option>
+      <option value="AC 1/2 PK|350">AC 1/2 PK (350W)</option>
+      <option value="AC 1 PK|750">AC 1 PK (750W)</option>
+      <option value="Kipas Angin|50">Kipas Angin (50W)</option>
+      <option value="Rice Cooker|400">Rice Cooker (400W)</option>
+      <option value="Setrika|350">Setrika (350W)</option>
+      <option value="Laptop|65">Laptop (65W)</option>
+      <option value="Mesin Cuci|350">Mesin Cuci (350W)</option>
+    </select>
+
     <!-- INPUT DEVICE -->
-     
-     <h3>Pilih Perangkat Umum</h3>
-<select id="presetSelect">
-  <option value="">-- Pilih Perangkat --</option>
-  <option value="Lampu LED|10">Lampu LED (10W)</option>
-  <option value="TV LED|60">TV LED (60W)</option>
-  <option value="Kulkas|100">Kulkas (100W)</option>
-  <option value="AC 1/2 PK|350">AC 1/2 PK (350W)</option>
-  <option value="AC 1 PK|750">AC 1 PK (750W)</option>
-  <option value="Kipas Angin|50">Kipas Angin (50W)</option>
-  <option value="Rice Cooker|400">Rice Cooker (400W)</option>
-  <option value="Setrika|350">Setrika (350W)</option>
-  <option value="Laptop|65">Laptop (65W)</option>
-  <option value="Mesin Cuci|350">Mesin Cuci (350W)</option>
-</select>
     <h3>Tambah Perangkat</h3>
 
     <input id="name" type="text" placeholder="Nama perangkat">
     <input id="power" type="number" placeholder="Daya (Watt)">
     <input id="qty" type="number" placeholder="Jumlah alat">
-    <input id="hours" type="number" placeholder="Jam penggunaan per hari">
+    <input id="hours" type="number" placeholder="Jam per hari">
 
     <select id="type">
       <option value="always">Always (24 jam)</option>
@@ -70,11 +72,12 @@
 
     <button id="addDevice">+ Tambah Perangkat</button>
 
-    <!-- LIST DEVICE -->
+    <!-- LIST -->
     <h3>Daftar Perangkat</h3>
     <ul id="deviceList"></ul>
 
     <button id="calculate">Hitung Energi</button>
+
   </div>
 </section>
 
@@ -88,7 +91,9 @@
     <div id="summary"></div>
 
     <!-- CHART -->
-    <canvas id="chart"></canvas>
+    <div style="height:300px;">
+      <canvas id="chart"></canvas>
+    </div>
 
     <!-- TABLE -->
     <div id="table"></div>
