@@ -149,23 +149,46 @@ document.getElementById("calculate").onclick = () => {
 
 // ===================== RENDER =====================
 
-function renderSummary(total, cost, status, R) {
-  document.getElementById("summary").innerText =
-    `Total Energi: ${total.toFixed(2)} kWh | Estimasi Biaya: Rp ${Math.round(cost).toLocaleString("id-ID")} | Status: ${status} | Rasio: ${R.toFixed(2)}`;
-}
-
 function renderChart(labels, data) {
   const ctx = document.getElementById("chart");
 
   if (chart) chart.destroy();
 
   chart = new Chart(ctx, {
-    type: "doughnut",
+    type: "bar",
     data: {
-      labels,
+      labels: labels,
       datasets: [{
-        data
+        label: "Konsumsi Energi (kWh)",
+        data: data
       }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: true
+        }
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: "#f1f5f9"
+          },
+          grid: {
+            display: false
+          }
+        },
+        y: {
+          beginAtZero: true,
+          ticks: {
+            color: "#f1f5f9"
+          },
+          grid: {
+            color: "#334155"
+          }
+        }
+      }
     }
   });
 }
