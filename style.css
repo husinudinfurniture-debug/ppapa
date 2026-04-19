@@ -1,37 +1,179 @@
-/* ===================== style.css ===================== */
-body {
+/* ================= ROOT ================= */
+:root {
+  --bg: #0f172a;
+  --card: #1e293b;
+  --primary: #38bdf8;
+  --accent: #22c55e;
+  --text: #f1f5f9;
+  --text-soft: #94a3b8;
+  --danger: #ef4444;
+}
+
+/* ================= GLOBAL ================= */
+* {
+  box-sizing: border-box;
   margin: 0;
-  font-family: Arial;
-  background: #0f172a;
-  color: #fff;
+  padding: 0;
+  font-family: "Segoe UI", system-ui, sans-serif;
 }
 
-.page { display: none; }
-.page.active { display: block; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
 
-.card {
+/* ================= PAGE ================= */
+.page {
+  display: none;
   padding: 20px;
-  margin: 20px;
-  background: #1e293b;
-  border-radius: 12px;
 }
 
-.center { text-align: center; }
+.page.active {
+  display: block;
+}
 
-input, select, button {
+/* ================= CARD ================= */
+.card {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 16px;
+  max-width: 700px;
+  margin: 20px auto;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.center {
+  text-align: center;
+}
+
+/* ================= TYPOGRAPHY ================= */
+h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+p {
+  color: var(--text-soft);
+}
+
+/* ================= INPUT ================= */
+input,
+select,
+button {
   width: 100%;
-  margin: 5px 0;
+  padding: 12px;
+  margin-top: 8px;
+  border-radius: 10px;
+  border: none;
+  font-size: 0.95rem;
+}
+
+/* INPUT */
+input,
+select {
+  background: #334155;
+  color: white;
+}
+
+input::placeholder {
+  color: var(--text-soft);
+}
+
+/* BUTTON */
+button {
+  background: var(--primary);
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+/* ================= LIST ================= */
+ul {
+  list-style: none;
+  margin-top: 10px;
+}
+
+li {
+  background: #334155;
   padding: 10px;
   border-radius: 8px;
-  border: none;
+  margin-bottom: 6px;
+  font-size: 0.9rem;
 }
 
-button {
-  background: #38bdf8;
-  color: #000;
-  font-weight: bold;
+/* ================= SUMMARY ================= */
+#summary {
+  margin-bottom: 15px;
+  padding: 12px;
+  background: #020617;
+  border-radius: 10px;
+  font-size: 0.95rem;
 }
 
-ul { padding: 0; list-style: none; }
+/* ================= TABLE ================= */
+#table p {
+  background: #020617;
+  padding: 8px;
+  border-radius: 8px;
+  margin-bottom: 5px;
+  font-size: 0.85rem;
+}
 
+/* ================= ANALYSIS ================= */
+#analysis {
+  margin-top: 15px;
+  padding: 10px;
+  background: #1e3a8a;
+  border-radius: 10px;
+}
 
+/* ================= RECOMMENDATION ================= */
+#recommendation {
+  margin-top: 15px;
+  padding: 10px;
+  background: #14532d;
+  border-radius: 10px;
+}
+
+/* ================= CHART ================= */
+canvas {
+  margin-top: 20px;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (min-width: 768px) {
+  .card {
+    padding: 30px;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .card {
+    max-width: 900px;
+  }
+}
