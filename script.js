@@ -1,3 +1,4 @@
+
 // ===================== STATE =====================
 const pages = {
   landing: document.getElementById("landing"),
@@ -16,7 +17,17 @@ function show(page) {
 
 document.getElementById("startBtn").onclick = () => show("input");
 
-// ===================== DEVICE MANAGEMENT =====================
+// ===================== PRESET AUTO FILL =====================
+document.getElementById("presetSelect").addEventListener("change", function () {
+  if (!this.value) return;
+
+  const [name, watt] = this.value.split("|");
+
+  document.getElementById("name").value = name;
+  document.getElementById("power").value = watt;
+});
+
+// ===================== ADD DEVICE =====================
 document.getElementById("addDevice").onclick = () => {
   const name = document.getElementById("name").value.trim();
   const power = Number(document.getElementById("power").value);
@@ -25,7 +36,7 @@ document.getElementById("addDevice").onclick = () => {
   const type = document.getElementById("type").value;
 
   if (!name || power <= 0 || qty <= 0 || hours <= 0) {
-    alert("Semua input harus valid dan > 0");
+    alert("Semua input harus valid (> 0)");
     return;
   }
 
@@ -34,74 +45,61 @@ document.getElementById("addDevice").onclick = () => {
   clearInputs();
 };
 
+// ===================== RENDER DEVICE =====================
 function renderDevices() {
   const list = document.getElementById("deviceList");
   list.innerHTML = "";
 
-  devices.forEach((d, i) => {
+  devices.forEach(d => {
     const li = document.createElement("li");
     li.textContent = `${d.name} | ${d.power}W | ${d.qty} unit | ${d.hours} jam | ${d.type}`;
     list.appendChild(li);
   });
 }
 
+// ===================== CLEAR INPUT =====================
 function clearInputs() {
   document.getElementById("name").value = "";
   document.getElementById("power").value = "";
   document.getElementById("qty").value = "";
   document.getElementById("hours").value = "";
+  document.getElementById("presetSelect").value = "";
 }
 
-document.getElementById("presetSelect").addEventListener("change", function () {
-  const value = this.value;
-  if (!value) return;
-
-  const [name, watt] = value.split("|");
-
-  document.getElementById("name").value = name;
-  document.getElementById("power").value = watt;
-});
-
-// ===================== CORE MATH =====================
+// ===================== CORE LOGIC =====================
 
 // Energi
-function calculateEnergy(device) {
-  return (device.power * device.qty * device.hours * 30) / 1000;
+function calculateEnergy(d) {
+  return (d.power * d.qty * d.hours * 30) / 1000;
 }
 
-// Adjustability Factor
+// AF
 function getAF(type) {
-  switch(type) {
-    case "always": return 0;
-    case "routine": return 0.5;
-    case "flexible": return 1;
-    default: return 0;
-  }
+  if (type === "always") return 0;
+  if (type === "routine") return 0.5;
+  return 1;
 }
 
 // Optimasi
-function optimizeDevice(device) {
-  const AF = getAF(device.type);
+function optimizeDevice(d) {
+  const AF = getAF(d.type);
   const deltaT = 2 * AF;
-  const newHours = Math.max(device.hours - deltaT, 1);
+  const newHours = Math.max(d.hours - deltaT, 1);
 
-  return {
-    ...device,
-    newHours
-  };
+  return { ...d, newHours };
 }
 
-// ===================== MAIN CALCULATION =====================
+// ===================== CALCULATE =====================
 document.getElementById("calculate").onclick = () => {
 
   if (devices.length === 0) {
-    alert("Tambahkan minimal 1 perangkat");
+    alert("Tambahkan perangkat terlebih dahulu");
     return;
   }
 
   const select = document.getElementById("vaSelect");
   if (!select.value) {
-    alert("Pilih golongan listrik terlebih dahulu");
+    alert("Pilih VA terlebih dahulu");
     return;
   }
 
@@ -111,19 +109,19 @@ document.getElementById("calculate").onclick = () => {
   let totalEnergy = 0;
   let optimizedEnergy = 0;
 
-  const energies = [];
   const labels = [];
+  const energies = [];
 
-  devices.forEach(device => {
-    const energy = calculateEnergy(device);
+  devices.forEach(d => {
+    const energy = calculateEnergy(d);
     totalEnergy += energy;
 
-    const optimized = optimizeDevice(device);
-    const energyOpt = (optimized.power * optimized.qty * optimized.newHours * 30) / 1000;
-    optimizedEnergy += energyOpt;
+    const opt = optimizeDevice(d);
+    const eOpt = (opt.power * opt.qty * opt.newHours * 30) / 1000;
+    optimizedEnergy += eOpt;
 
+    labels.push(d.name);
     energies.push(Number(energy.toFixed(2)));
-    labels.push(device.name);
   });
 
   // Cost
@@ -147,52 +145,54 @@ document.getElementById("calculate").onclick = () => {
   show("result");
 };
 
-// ===================== RENDER =====================
+// ===================== SUMMARY =====================
+function renderSummary(total, cost, status, R) {
+  document.getElementById("summary").innerText =
+    `Energi: ${total.toFixed(2)} kWh | Biaya: Rp ${Math.round(cost).toLocaleString("id-ID")} | Status: ${status} | Rasio: ${R.toFixed(2)}`;
+}
 
+// ===================== BAR CHART =====================
 function renderChart(labels, data) {
-  const ctx = document.getElementById("chart");
+  const canvas = document.getElementById("chart");
+
+  if (!canvas) {
+    console.error("Canvas tidak ditemukan");
+    return;
+  }
+
+  const ctx = canvas.getContext("2d");
 
   if (chart) chart.destroy();
+
+  if (!labels.length || !data.length) return;
 
   chart = new Chart(ctx, {
     type: "bar",
     data: {
       labels: labels,
       datasets: [{
-        label: "Konsumsi Energi (kWh)",
-        data: data
+        label: "Energi (kWh)",
+        data: data,
+        backgroundColor: "#38bdf8"
       }]
     },
     options: {
       responsive: true,
-      plugins: {
-        legend: {
-          display: true
-        }
-      },
+      maintainAspectRatio: false,
       scales: {
         x: {
-          ticks: {
-            color: "#f1f5f9"
-          },
-          grid: {
-            display: false
-          }
+          ticks: { color: "#ffffff" }
         },
         y: {
           beginAtZero: true,
-          ticks: {
-            color: "#f1f5f9"
-          },
-          grid: {
-            color: "#334155"
-          }
+          ticks: { color: "#ffffff" }
         }
       }
     }
   });
 }
 
+// ===================== TABLE =====================
 function renderTable(energies, total) {
   const div = document.getElementById("table");
   div.innerHTML = "<h3>Distribusi Energi</h3>";
@@ -206,32 +206,31 @@ function renderTable(energies, total) {
   });
 }
 
+// ===================== ANALYSIS =====================
 function renderAnalysis(energies) {
   const max = Math.max(...energies);
-  const index = energies.indexOf(max);
+  const idx = energies.indexOf(max);
 
   document.getElementById("analysis").innerText =
-    `Perangkat paling boros: ${devices[index].name}`;
+    `Perangkat paling boros: ${devices[idx].name}`;
 }
 
+// ===================== RECOMMENDATION =====================
 function renderRecommendation() {
   const div = document.getElementById("recommendation");
-  div.innerHTML = "<h3>Rekomendasi Penghematan</h3>";
+  div.innerHTML = "<h3>Rekomendasi</h3>";
 
   devices.forEach(d => {
     const AF = getAF(d.type);
-    const reduction = 2 * AF;
+    const reduce = 2 * AF;
 
-    if (reduction > 0) {
+    if (reduce > 0) {
       const p = document.createElement("p");
-      p.innerText = `${d.name}: kurangi penggunaan sekitar ${reduction} jam/hari`;
+      p.innerText = `${d.name}: kurangi ${reduce} jam/hari`;
       div.appendChild(p);
     }
   });
 }
 
 // ===================== RESET =====================
-document.getElementById("reset").onclick = () => {
-  devices = [];
-  location.reload();
-};
+document.getElementById("reset").onclick = () => location.reload();
