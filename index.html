@@ -1,0 +1,74 @@
+<!-- ===================== index.html ===================== -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EnergiScan</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<!-- LANDING -->
+<section id="landing" class="page active">
+  <div class="card center">
+    <h1>⚡ EnergiScan</h1>
+    <p id="mascot">Halo! Saya Vecto 🤖 — siap bantu analisis energi kamu!</p>
+    <button id="startBtn">Mulai</button>
+  </div>
+</section>
+
+<!-- INPUT -->
+<section id="inputPage" class="page">
+  <div class="card">
+    <h2>Input Data</h2>
+
+    <label>Golongan Listrik</label>
+    <select id="vaSelect">
+      <option value="415">450 VA Subsidi — 415/kWh</option>
+      <option value="605">900 VA Subsidi — 605/kWh</option>
+      <option value="1352">900 VA Non Subsidi — 1352/kWh</option>
+      <option value="1444.7">1300 VA — 1444.7/kWh</option>
+      <option value="1444.7">2200 VA — 1444.7/kWh</option>
+      <option value="1699.53">3500 VA — 1699.53/kWh</option>
+    </select>
+
+    <h3>Tambah Perangkat</h3>
+    <input id="name" placeholder="Nama perangkat" />
+    <input id="power" type="number" placeholder="Daya (Watt)" />
+    <input id="qty" type="number" placeholder="Jumlah" />
+    <input id="hours" type="number" placeholder="Jam/hari" />
+
+    <select id="type">
+      <option value="always">Always (24 jam)</option>
+      <option value="routine">Routine</option>
+      <option value="flexible">Flexible</option>
+    </select>
+
+    <button id="addDevice">Tambah</button>
+
+    <ul id="deviceList"></ul>
+
+    <button id="calculate">Hitung</button>
+  </div>
+</section>
+
+<!-- RESULT -->
+<section id="resultPage" class="page">
+  <div class="card">
+    <h2>Hasil Analisis</h2>
+    <p id="summary"></p>
+    <canvas id="chart"></canvas>
+    <div id="table"></div>
+    <div id="analysis"></div>
+    <div id="recommendation"></div>
+    <button id="reset">Reset</button>
+  </div>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>
+
+
